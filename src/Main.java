@@ -7,22 +7,26 @@ public class Main {
     public static void main(String[] args) {
         List<Vehicule> vehicules = new ArrayList<>();
 
-        vehicules.add(new Vehicule("B", 100, 150));
+   /*     vehicules.add(new Vehicule("B", 100, 150));
         vehicules.add(new Vehicule("X", 5, 10));
         vehicules.add(new Vehicule("DODO", 2, 1540));
-        vehicules.add(new Vehicule("DODOMOBILE", 1234566, 145640));
+        vehicules.add(new Vehicule("DODOMOBILE", 1234566, 145640));*/
 
-        Vehicule voitureChre = voiturePlusChere(vehicules);
-        System.out.println("La voiture la plus chère est " + voitureChre.getMarque());
+        /*   */
 
-        Vehicule voiturePetitK = voiturePlusPetitKilometrage(vehicules);
+        for (int i = 0; i<3; i++){
+            ajout(vehicules);
+            Vehicule voitureChre = voiturePlusChere(vehicules);
+            System.out.println("\nLa voiture la plus chère est " + voitureChre.getMarque());
 
-        System.out.println("La voiture ayant le plus petit kilometrage est " + voiturePetitK.getKilometrage() + " pour la voiture : " + voiturePetitK.getMarque());
+            Vehicule voiturePetitK = voiturePlusPetitKilometrage(vehicules);
 
-        int prixTotal = prixTotal(vehicules);
-        System.out.println("Le prix total est : " + prixTotal);
+            System.out.println("La voiture ayant le plus petit kilometrage est " + voiturePetitK.getKilometrage() + " pour la voiture : " + voiturePetitK.getMarque());
 
-        ajout(vehicules);
+            int prixTotal = prixTotal(vehicules);
+            System.out.println("Le prix total est : " + prixTotal + "\n");
+        }
+
     }
 
     private static void ajout(List<Vehicule> vehicules) {
@@ -32,8 +36,10 @@ public class Main {
         int kilo = saisieKilometrage();
         System.out.print("Entrer le prix de la voiture(que des entiers) : ");
         int prix = saisiePrix();
+        Vehicule v = new Vehicule(marque, kilo, prix);
 
-        vehicules.add(new Vehicule(marque, kilo, prix));
+        vehicules.add(v);
+        System.out.println(v.toString());
     }
 
     private static String saisieMarque() {
@@ -45,7 +51,7 @@ public class Main {
                 throw new Exception();
             }
         } catch (Exception e) {
-            System.out.print("Entrer que des lettres : ");
+            System.out.print(Constantes.entierSeulement);
             saisieMarque();
         }
         return saisi;
@@ -57,7 +63,7 @@ public class Main {
         try {
             saisi = sc.nextInt();
         } catch (Exception e) {
-            System.out.print("Entrer que des entiers : ");
+            System.out.print(Constantes.entierSeulement);
             saisieKilometrage();
         }
         return saisi;
@@ -69,7 +75,7 @@ public class Main {
         try {
             saisi = sc.nextInt();
         } catch (Exception e) {
-            System.out.print("Entrer que des entiers : ");
+            System.out.print(Constantes.entierSeulement);
             saisiePrix();
         }
         return saisi;
@@ -96,6 +102,9 @@ public class Main {
         } else if (vehicules.size() == 1) {
             v = vehicules.get(0);
         }
+        else {
+            System.out.println(Constantes.aucuneDonnee);
+        }
         return v;
     }
 
@@ -120,6 +129,10 @@ public class Main {
         } else if (vehicules.size() == 1) {
             v = vehicules.get(0);
         }
+        else {
+            System.out.println(Constantes.aucuneDonnee);
+        }
+
         return v;
     }
 
@@ -132,4 +145,10 @@ public class Main {
         return total;
     }
 
+    @Override
+    public String toString() {
+        String info = "Les informations du véhicule sont : ";
+        info += super.toString();
+        return info;
+    }
 }

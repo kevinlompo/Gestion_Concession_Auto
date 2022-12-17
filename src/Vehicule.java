@@ -36,4 +36,8 @@ public class Vehicule {
         this.prix = prix;
     }
 
+    public String toString() {
+        return "marque : " +this.getMarque() + ", Kilométrage : " + this.getKilometrage() + ", Prix : " +this.getPrix();
+    }
+
 }

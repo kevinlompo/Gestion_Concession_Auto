@@ -8,10 +8,10 @@ public class Main {
         List<Vehicule> vehicules = new ArrayList<Vehicule>();
 
         vehicules.add(new Vehicule("B", 100, 150));
-      /*  vehicules.add(new Vehicule("C", 600, 200));
-        vehicules.add(new Vehicule("X", 5, 250));*/
+        vehicules.add(new Vehicule("C", 600, 200));
+        vehicules.add(new Vehicule("X", 5, 250));
 
-       Vehicule voitureChre = voiturePlusChere(vehicules);
+        Vehicule voitureChre = voiturePlusChere(vehicules);
         System.out.println("La voiture la plus chère est " + voitureChre.getMarque());
 
         Vehicule voiturePetitK = voiturePlusPetitKilometrage(vehicules);
@@ -39,7 +39,10 @@ public class Main {
         Scanner sc = new Scanner(in);
         String saisi = "";
         try {
-             saisi =  sc.next();
+            saisi =  sc.next();
+            if(!saisi.matches("[a-zA-Z]+")){
+                throw new Exception();
+            }
         } catch (Exception e) {
             System.out.print("Entrer que des lettres : ");
             saisieMarque();
@@ -70,23 +73,32 @@ public class Main {
         }
         return saisi;
     }
-        private static Vehicule voiturePlusChere(List<Vehicule> vehicules) {
-            Vehicule v = new Vehicule("", 2, 5);
-        for (int i = 0; i<vehicules.size(); i++){
-            if (vehicules.get(i).getPrix() < vehicules.get(++i).getPrix()){
-                v = vehicules.get(++i);
+    private static Vehicule voiturePlusChere(List<Vehicule> vehicules) {
+        Vehicule v = null;
+        if(vehicules.size()>1){
+            for (int i = 0; i<vehicules.size(); i++){
+                if (vehicules.get(i).getPrix() < vehicules.get(++i).getPrix()){
+                    v = vehicules.get(++i);
+                }
             }
         }
-
+        else if (vehicules.size() == 1){
+            v =  vehicules.get(0);
+        }
         return v;
     }
 
     private static Vehicule voiturePlusPetitKilometrage(List<Vehicule> vehicules) {
-        Vehicule v = new Vehicule("", 2, 5);
-        for (int i = 0; i<vehicules.size(); i++){
-            if (vehicules.get(i).getKilometrage() < vehicules.get(++i).getKilometrage()){
-                v = vehicules.get(++i);
+        Vehicule v = null;
+        if(vehicules.size()>1){
+            for (int i = 0; i<vehicules.size(); i++){
+                if (vehicules.get(i).getKilometrage() < vehicules.get(++i).getKilometrage()){
+                    v = vehicules.get(++i);
+                }
             }
+        }
+        else if (vehicules.size() == 1){
+            v =  vehicules.get(0);
         }
         return v;
     }
@@ -94,7 +106,7 @@ public class Main {
     private static int prixTotal(List<Vehicule> vehicules){
         int total = 0;
         for (Vehicule v:
-             vehicules) {
+                vehicules) {
             total += v.getPrix();
         }
         return total;

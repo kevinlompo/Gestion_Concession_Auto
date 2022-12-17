@@ -129,10 +129,14 @@ public class Main {
     // Retourne le prix Total des véhicules de la concession
     private static int prixTotal(List<Vehicule> vehicules) {
         int total = 0;
-        for (Vehicule v :
-                vehicules) {
-            total += v.getPrix();
+        if (vehicules.size() >= 1) {
+            for (Vehicule v : vehicules) {
+                total += v.getPrix();
+            }
+        } else {
+            System.out.println(Constantes.aucuneDonnee);
         }
+
         return total;
     }
 

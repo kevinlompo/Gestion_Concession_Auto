@@ -5,18 +5,19 @@ import static java.lang.System.in;
 
 public class Main {
     public static void main(String[] args) {
-        List<Vehicule> vehicules = new ArrayList<Vehicule>();
+        List<Vehicule> vehicules = new ArrayList<>();
 
         vehicules.add(new Vehicule("B", 100, 150));
-        vehicules.add(new Vehicule("C", 600, 200));
-        vehicules.add(new Vehicule("X", 5, 250));
+        vehicules.add(new Vehicule("X", 5, 10));
+        vehicules.add(new Vehicule("DODO", 2, 1540));
+        vehicules.add(new Vehicule("DODOMOBILE", 1234566, 145640));
 
         Vehicule voitureChre = voiturePlusChere(vehicules);
         System.out.println("La voiture la plus chère est " + voitureChre.getMarque());
 
         Vehicule voiturePetitK = voiturePlusPetitKilometrage(vehicules);
 
-        System.out.println("La voiture ayant le plus petit kilometrage est " + voiturePetitK.getKilometrage());
+        System.out.println("La voiture ayant le plus petit kilometrage est " + voiturePetitK.getKilometrage() + " pour la voiture : " + voiturePetitK.getMarque());
 
         int prixTotal = prixTotal(vehicules);
         System.out.println("Le prix total est : " + prixTotal);
@@ -24,7 +25,7 @@ public class Main {
         ajout(vehicules);
     }
 
-    private static void ajout(List<Vehicule> vehicules){
+    private static void ajout(List<Vehicule> vehicules) {
         System.out.print("Entrer la marque de la voiture(que des lettres) : ");
         String marque = saisieMarque();
         System.out.print("Entrer le kilométrage de la voiture(que des entiers) : ");
@@ -32,15 +33,15 @@ public class Main {
         System.out.print("Entrer le prix de la voiture(que des entiers) : ");
         int prix = saisiePrix();
 
-        vehicules.add(new Vehicule(marque,kilo,prix));
+        vehicules.add(new Vehicule(marque, kilo, prix));
     }
 
     private static String saisieMarque() {
         Scanner sc = new Scanner(in);
         String saisi = "";
         try {
-            saisi =  sc.next();
-            if(!saisi.matches("[a-zA-Z]+")){
+            saisi = sc.next();
+            if (!saisi.matches("[a-zA-Z]+")) {
                 throw new Exception();
             }
         } catch (Exception e) {
@@ -73,39 +74,58 @@ public class Main {
         }
         return saisi;
     }
+
     private static Vehicule voiturePlusChere(List<Vehicule> vehicules) {
-        Vehicule v = null;
-        if(vehicules.size()>1){
-            for (int i = 0; i<vehicules.size(); i++){
-                if (vehicules.get(i).getPrix() < vehicules.get(++i).getPrix()){
-                    v = vehicules.get(++i);
-                }
+        Vehicule v = new Vehicule("",0,0);
+        int val = Integer.MIN_VALUE;
+        List<Integer> test = new ArrayList();
+        if (vehicules.size() > 1) {
+            for (int i = 0; i < vehicules.size(); i++) {
+                test.add(vehicules.get(i).getPrix());
+                if (test.get(i) > val) val = test.get(i);
+
             }
-        }
-        else if (vehicules.size() == 1){
-            v =  vehicules.get(0);
+
+            for (int i = 0; i < test.size(); i++) {
+                if (vehicules.get(i).getPrix() == val) {
+                    v = vehicules.get(i);
+                }
+
+            }
+
+        } else if (vehicules.size() == 1) {
+            v = vehicules.get(0);
         }
         return v;
     }
 
     private static Vehicule voiturePlusPetitKilometrage(List<Vehicule> vehicules) {
-        Vehicule v = null;
-        if(vehicules.size()>1){
-            for (int i = 0; i<vehicules.size(); i++){
-                if (vehicules.get(i).getKilometrage() < vehicules.get(++i).getKilometrage()){
-                    v = vehicules.get(++i);
-                }
+        Vehicule v = new Vehicule("",0,0);
+        int val = Integer.MAX_VALUE;
+        List<Integer> test = new ArrayList();
+        if (vehicules.size() > 1) {
+            for (int i = 0; i < vehicules.size(); i++) {
+                test.add(vehicules.get(i).getKilometrage());
+                if (test.get(i) < val) val = test.get(i);
+
             }
-        }
-        else if (vehicules.size() == 1){
-            v =  vehicules.get(0);
+
+            for (int i = 0; i < test.size(); i++) {
+                if (vehicules.get(i).getKilometrage() == val) {
+                    v = vehicules.get(i);
+                }
+
+            }
+
+        } else if (vehicules.size() == 1) {
+            v = vehicules.get(0);
         }
         return v;
     }
 
-    private static int prixTotal(List<Vehicule> vehicules){
+    private static int prixTotal(List<Vehicule> vehicules) {
         int total = 0;
-        for (Vehicule v:
+        for (Vehicule v :
                 vehicules) {
             total += v.getPrix();
         }

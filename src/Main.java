@@ -24,11 +24,11 @@ public class Main {
 
     // Ajout d'un véhicule à la concession
     private static void ajout(List<Vehicule> vehicules) {
-        System.out.print("Entrer la marque de la voiture(que des lettres) : ");
+        System.out.print("Entrer la marque de la voiture (que des lettres) : ");
         String marque = saisieMarque();
-        System.out.print("Entrer le kilométrage de la voiture(que des entiers) : ");
+        System.out.print("Entrer le kilométrage de la voiture (que des entiers) : ");
         int kilo = saisieKilometrage();
-        System.out.print("Entrer le prix de la voiture(que des entiers) : ");
+        System.out.print("Entrer le prix de la voiture (que des entiers) : ");
         int prix = saisiePrix();
         Vehicule v = new Vehicule(marque, kilo, prix);
 
@@ -136,13 +136,12 @@ public class Main {
         } else {
             System.out.println(Constantes.aucuneDonnee);
         }
-
         return total;
     }
 
     @Override
     public String toString() {
-        String info = "Les informations du véhicule sont : ";
+        String info = "Les informations du véhicule sont : \n";
         info += super.toString();
         return info;
     }

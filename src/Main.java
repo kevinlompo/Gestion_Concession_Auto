@@ -1,10 +1,11 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import static java.lang.System.in;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         List<Vehicule> vehicules = new ArrayList<>();
 
         // Moteur
@@ -23,7 +24,7 @@ public class Main {
     }
 
     // Ajout d'un véhicule à la concession
-    private static void ajout(List<Vehicule> vehicules) {
+    private static void ajout(List<Vehicule> vehicules) throws IOException {
         System.out.print("Entrer la marque de la voiture (que des lettres) : ");
         String marque = saisieMarque();
         System.out.print("Entrer le kilométrage de la voiture (que des entiers) : ");
@@ -33,11 +34,11 @@ public class Main {
         Vehicule v = new Vehicule(marque, kilo, prix);
 
         vehicules.add(v);
-        System.out.println(v.toString());
+        System.out.println(v);
     }
 
     // Saisie de la Marque du véhicule
-    private static String saisieMarque() {
+    private static String saisieMarque() throws IOException {
         Scanner sc = new Scanner(in);
         String saisi = "";
         try {
@@ -46,7 +47,7 @@ public class Main {
                 throw new Exception();
             }
         } catch (Exception e) {
-            System.out.print(Constantes.entierSeulement);
+            System.out.print(Constantes.lettreSeulement);
             saisieMarque();
         }
         return saisi;

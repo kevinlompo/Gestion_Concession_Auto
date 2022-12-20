@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Vehicule {
-    String marque;
-    int kilometrage;
-    int prix;
+   private String marque;
+   private int kilometrage;
+   private int prix;
 
     public Vehicule(String marque, int kilometrage, int prix){
         this.marque = marque;

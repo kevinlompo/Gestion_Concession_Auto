@@ -1,22 +1,18 @@
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
 import static java.lang.System.in;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         List<Vehicule> vehicules = new ArrayList<>();
 
         // Moteur
         for (int i = 0; i<3; i++){
             ajout(vehicules);
 
-            Vehicule voitureChere = voiturePlusChere(vehicules);
-            System.out.println("\nLa voiture la plus chère est " + voitureChere.getMarque());
+            voiturePlusChere(vehicules);
 
-            Vehicule voiturePetitK = voiturePlusPetitKilometrage(vehicules);
-            System.out.println("La voiture ayant le plus petit kilometrage est " + voiturePetitK.getKilometrage() + " pour la voiture : " + voiturePetitK.getMarque());
+            voiturePlusPetitKilometrage(vehicules);
 
             int prixTotal = prixTotal(vehicules);
             System.out.println("Le prix total est : " + prixTotal + "\n");
@@ -24,7 +20,7 @@ public class Main {
     }
 
     // Ajout d'un véhicule à la concession
-    private static void ajout(List<Vehicule> vehicules) throws IOException {
+    private static void ajout(List<Vehicule> vehicules) {
         System.out.print("Entrer la marque de la voiture (que des lettres) : ");
         String marque = saisieMarque();
         System.out.print("Entrer le kilométrage de la voiture (que des entiers) : ");
@@ -38,7 +34,7 @@ public class Main {
     }
 
     // Saisie de la Marque du véhicule
-    private static String saisieMarque() throws IOException {
+    private static String saisieMarque() {
         Scanner sc = new Scanner(in);
         String saisi = "";
         try {
@@ -79,71 +75,40 @@ public class Main {
         return saisi;
     }
 
-    // Retourne la voiture la plus chère
-    private static Vehicule voiturePlusChere(List<Vehicule> vehicules) {
-        Vehicule v = new Vehicule("",0,0);
-        int val = Integer.MIN_VALUE;
-        List<Integer> test = new ArrayList<>();
-        if (vehicules.size() > 1) {
-            for (int i = 0; i < vehicules.size(); i++) {
-                test.add(vehicules.get(i).getPrix());
-                if (test.get(i) > val) val = test.get(i);
-            }
-            for (int i = 0; i < test.size(); i++) {
-                if (vehicules.get(i).getPrix() == val) {
-                    v = vehicules.get(i);
-                }
-            }
-        } else if (vehicules.size() == 1) {
-            v = vehicules.get(0);
-        }
-        else {
-            System.out.println(Constantes.aucuneDonnee);
-        }
-        return v;
+    // 1- non gestion du cas pour lequel on a deux voitures qui ont le même prix
+    // 2- pas d'utilisation des streams ? quelle version de java connais-tu ?
+    private static void voiturePlusChere(List<Vehicule> vehicules) {
+        OptionalInt prixMax = vehicules.stream().mapToInt(Vehicule::getPrix).max();
+
+        System.out.println("\nLa voiture la plus chère est :");
+
+        prixMax.ifPresentOrElse(maxPrice->
+                        vehicules.stream().filter(vehicule -> vehicule.getPrix() == maxPrice)
+                                .forEach(System.out::println),
+                ()-> System.out.println(Constantes.aucuneDonnee));
     }
 
-    // Retourne la voiture ayant le plus petit kilometrage
-    private static Vehicule voiturePlusPetitKilometrage(List<Vehicule> vehicules) {
-        Vehicule v = new Vehicule("",0,0);
-        int val = Integer.MAX_VALUE;
-        List<Integer> test = new ArrayList<>();
-        if (vehicules.size() > 1) {
-            for (int i = 0; i < vehicules.size(); i++) {
-                test.add(vehicules.get(i).getKilometrage());
-                if (test.get(i) < val) val = test.get(i);
-            }
-            for (int i = 0; i < test.size(); i++) {
-                if (vehicules.get(i).getKilometrage() == val) {
-                    v = vehicules.get(i);
-                }
-            }
-        } else if (vehicules.size() == 1) {
-            v = vehicules.get(0);
-        }
-        else {
-            System.out.println(Constantes.aucuneDonnee);
-        }
-        return v;
+    // 1- non gestion du cas pour lequel on a deux voitures qui ont le même km
+    // 2- pas d'utilisation des streams
+    private static void voiturePlusPetitKilometrage(List<Vehicule> vehicules) {
+        OptionalInt kmMin = vehicules.stream().mapToInt(Vehicule::getKilometrage).min();
+
+        kmMin.ifPresentOrElse(min-> {
+                    System.out.println("La voiture ayant le plus petit kilometrage est " + min + " pour la voiture : ");
+                    vehicules.stream().filter(vehicule -> vehicule.getKilometrage() == min)
+                            .forEach(System.out::println);
+                },
+                ()-> System.out.println(Constantes.aucuneDonnee));
     }
 
-    // Retourne le prix Total des véhicules de la concession
+    // 1- pas d'utilisation des streams
     private static int prixTotal(List<Vehicule> vehicules) {
-        int total = 0;
-        if (vehicules.size() >= 1) {
-            for (Vehicule v : vehicules) {
-                total += v.getPrix();
-            }
-        } else {
+
+        if(vehicules.isEmpty()) {
             System.out.println(Constantes.aucuneDonnee);
         }
-        return total;
+
+        return vehicules.stream().mapToInt(Vehicule::getPrix).sum();
     }
 
-    @Override
-    public String toString() {
-        String info = "Les informations du véhicule sont : \n";
-        info += super.toString();
-        return info;
-    }
 }
